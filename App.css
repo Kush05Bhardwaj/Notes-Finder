@@ -1,0 +1,10 @@
+/* Add any global styles here */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f2f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
