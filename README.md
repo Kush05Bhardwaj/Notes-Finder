@@ -61,16 +61,34 @@ cd ..
 
 ### 4. Environment Configuration
 
-Create a `.env` file in the root directory:
+Create environment files from examples:
+```bash
+# Root environment
+cp .env.example .env
+
+# Frontend environment  
+cp frontend/.env.example frontend/.env
+```
+
+Update the `.env` file with your configuration:
 ```env
 NODE_ENV=development
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/notes_finder
-JWT_SECRET=your_jwt_secret_key_here_change_in_production
+JWT_SECRET=your_super_secure_jwt_secret_32_chars_minimum
 JWT_EXPIRE=30d
 UPLOAD_PATH=./uploads
 MAX_FILE_SIZE=5000000
+FRONTEND_URL=http://localhost:3000
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
+
+**⚠️ Important**: 
+- Never commit `.env` files to git
+- Use strong, random JWT_SECRET (32+ characters)
+- For production, use environment-specific values
 
 ### 5. Start MongoDB
 

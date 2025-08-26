@@ -1,0 +1,36 @@
+{
+  "name": "notes-finder",
+  "version": "1.0.0",
+  "description": "A comprehensive notes sharing platform for students and teachers",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "backend:dev": "cd backend && npm run dev",
+    "frontend:dev": "cd frontend && npm start",
+    "backend:start": "cd backend && npm start",
+    "frontend:build": "cd frontend && npm run build",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "build": "npm run frontend:build",
+    "start": "npm run backend:start",
+    "seed": "cd backend && node seeder.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.0.1"
+  },
+  "keywords": [
+    "notes",
+    "education",
+    "fullstack",
+    "react",
+    "express",
+    "mongodb"
+  ],
+  "author": "Kush Bhardwaj",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kush05Bhardwaj/Notes-Finder.git"
+  }
+}

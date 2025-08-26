@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Environment validation
+if (process.env.NODE_ENV === 'production' && !process.env.REACT_APP_API_URL) {
+  console.error('❌ REACT_APP_API_URL is required in production');
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

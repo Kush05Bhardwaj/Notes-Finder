@@ -24,17 +24,23 @@ function LoginPage() {
     setError('');
 
     try {
+      console.log('🚀 Attempting login with:', { email: formData.email });
       const response = await authAPI.login(formData);
+      console.log('✅ Login response:', response);
       
       if (response.success) {
         // Store token and user data
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user', JSON.stringify(response.data));
         
+        console.log('✅ Login successful, redirecting...');
         // Redirect to dashboard
         navigate('/');
+      } else {
+        setError(response.message || 'Login failed. Please try again.');
       }
     } catch (error) {
+      console.error('❌ Login error:', error);
       setError(error.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);

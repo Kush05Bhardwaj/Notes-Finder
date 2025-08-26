@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Notes Finder API Test</h1>
+    <div id="results"></div>
+    
+    <script>
+        async function testAPI() {
+            const results = document.getElementById('results');
+            
+            try {
+                // Test health endpoint
+                console.log('Testing health endpoint...');
+                const healthResponse = await fetch('http://localhost:5000/api/health');
+                const healthData = await healthResponse.json();
+                results.innerHTML += `<p>✅ Health Check: ${healthData.message}</p>`;
+                
+                // Test login with seeded data
+                console.log('Testing login...');
+                const loginResponse = await fetch('http://localhost:5000/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: 'jane.doe@student.edu',
+                        password: 'password123'
+                    })
+                });
+                
+                const loginData = await loginResponse.json();
+                if (loginData.success) {
+                    results.innerHTML += `<p>✅ Login Success: Welcome ${loginData.data.name}</p>`;
+                } else {
+                    results.innerHTML += `<p>❌ Login Failed: ${loginData.message}</p>`;
+                }
+                
+            } catch (error) {
+                results.innerHTML += `<p>❌ Error: ${error.message}</p>`;
+                console.error('Test error:', error);
+            }
+        }
+        
+        testAPI();
+    </script>
+</body>
+</html>

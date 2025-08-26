@@ -1,10 +1,22 @@
 import axios from 'axios';
 
 // Create axios instance
+const getBaseURL = () => {
+  if (process.env.NODE_ENV === 'production') {
+    return process.env.REACT_APP_API_URL || 'https://your-backend-domain.com/api';
+  }
+  
+  // In development, use the proxy or explicit URL
+  if (process.env.REACT_APP_API_URL) {
+    return `${process.env.REACT_APP_API_URL}/api`;
+  }
+  
+  // Use proxy in development (remove /api since proxy handles it)
+  return '/api';
+};
+
 const API = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' 
-    ? 'https://your-backend-url.com/api' 
-    : `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api`,
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -18,9 +30,16 @@ API.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // Debug logging in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🔗 API Request: ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`);
+    }
+    
     return config;
   },
   (error) => {
+    console.error('🚨 Request interceptor error:', error);
     return Promise.reject(error);
   }
 );
@@ -28,9 +47,18 @@ API.interceptors.request.use(
 // Response interceptor to handle errors
 API.interceptors.response.use(
   (response) => {
+    // Debug logging in development
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`✅ API Response: ${response.status} ${response.config.method?.toUpperCase()} ${response.config.url}`);
+    }
     return response.data;
   },
   (error) => {
+    // Debug logging in development
+    if (process.env.NODE_ENV === 'development') {
+      console.error(`❌ API Error: ${error.response?.status || 'Network'} ${error.config?.method?.toUpperCase()} ${error.config?.url}`, error.response?.data || error.message);
+    }
+    
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
